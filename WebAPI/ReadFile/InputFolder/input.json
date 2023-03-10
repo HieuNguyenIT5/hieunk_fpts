@@ -1,0 +1,12 @@
+﻿{
+  "products": [
+    {
+      "name": "Hiếu",
+      "age": 22
+    },
+    {
+      "name": "Lương",
+      "age": 21
+    }
+  ]
+}
