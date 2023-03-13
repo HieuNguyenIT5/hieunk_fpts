@@ -9,6 +9,7 @@ using System.Drawing;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using System;
 using Oracle.ManagedDataAccess.Types;
+using System.Net;
 
 namespace ConnectDB.Controllers
 {
@@ -17,7 +18,7 @@ namespace ConnectDB.Controllers
     public class ProceduceController : ControllerBase
     {
         public const string connectionString = "Data Source=localhost:1521/ORCLCDB;User Id=test;Password=Test1234;";
-        
+
         [HttpPost]
         [Route("addBuyer")]
         public IActionResult AddBuyer([FromBody] buyer buyer)
@@ -32,7 +33,7 @@ namespace ConnectDB.Controllers
                 command.Parameters.Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.name;
                 command.Parameters.Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.paymentmethod;
                 command.ExecuteNonQuery();
-                return Ok(new {message= "Thêm dữ liệu thành công!"});
+                return Ok(new { message = "Thêm dữ liệu thành công!" });
             }
             catch (Exception ex)
             {
@@ -59,7 +60,7 @@ namespace ConnectDB.Controllers
                 // Lấy giá trị trả về từ output parameter
 
                 int success = ((OracleDecimal)command.Parameters["success"].Value).ToInt32();
-                
+
                 connection.Close();
                 // Xử lý kết quả
                 if (success == 1)
@@ -96,15 +97,38 @@ namespace ConnectDB.Controllers
                 connection.Close();
                 if (success == 1)
                 {
-                    return Ok(new { message = "Xóa dữ liệu thành công!"});
+                    return Ok(new { message = "Xóa dữ liệu thành công!" });
                 }
                 else
                 {
                     return Ok(new { message = "Xóa dữ liệu thất bại!" });
                 }
-            }catch(Exception ex)
+            } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("getBuyer")]
+        public IActionResult GetBuyer()
+        {
+            var connection = new OracleConnection(connectionString);
+            try
+            {
+                connection.Open();
+                var command = new OracleCommand("getBuyers", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("result", OracleDbType.RefCursor, ParameterDirection.Output);
+                var reader = command.ExecuteReader();
+                var dataTable = new DataTable();
+                dataTable.Load(reader);
+                var json = JsonConvert.SerializeObject(dataTable, Formatting.Indented);
+                return Ok(json);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
             }
         }
     }
