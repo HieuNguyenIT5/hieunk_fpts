@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "p9CsUpZQJOn50GpHAhH7ah6I7o5gX4W03x9JrPFL5OtiNCqhc7zZFwCbmXI1DQr5yCFaqItUvb5IaJV461t0NQ==",
+  "dgSpecHash": "vnFjbnD3dDetHH464MWzaaM+gIPL45Yq78kIIjDk4btUvKxQD0RZOtDz5xV+Zvu6+gspWKU2G7VG7XbWmw8NyA==",
   "success": true,
-  "projectFilePath": "D:\\WebAPI\\ReadFile\\ReadFile.csproj",
+  "projectFilePath": "D:\\Code\\hieunk\\WebAPI\\ReadFile\\ReadFile.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fitthuctap33\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.2.0\\microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
     "C:\\Users\\fitthuctap33\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

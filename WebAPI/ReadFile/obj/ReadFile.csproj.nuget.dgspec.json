@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\WebAPI\\ReadFile\\ReadFile.csproj": {}
+    "D:\\Code\\hieunk\\WebAPI\\ReadFile\\ReadFile.csproj": {}
   },
   "projects": {
-    "D:\\WebAPI\\ReadFile\\ReadFile.csproj": {
+    "D:\\Code\\hieunk\\WebAPI\\ReadFile\\ReadFile.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\WebAPI\\ReadFile\\ReadFile.csproj",
+        "projectUniqueName": "D:\\Code\\hieunk\\WebAPI\\ReadFile\\ReadFile.csproj",
         "projectName": "ReadFile",
-        "projectPath": "D:\\WebAPI\\ReadFile\\ReadFile.csproj",
+        "projectPath": "D:\\Code\\hieunk\\WebAPI\\ReadFile\\ReadFile.csproj",
         "packagesPath": "C:\\Users\\fitthuctap33\\.nuget\\packages\\",
-        "outputPath": "D:\\WebAPI\\ReadFile\\obj\\",
+        "outputPath": "D:\\Code\\hieunk\\WebAPI\\ReadFile\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

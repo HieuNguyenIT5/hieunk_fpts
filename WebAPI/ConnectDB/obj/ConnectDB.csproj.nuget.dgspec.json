@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\WebAPI\\ConnectDB\\ConnectDB.csproj": {}
+    "D:\\Code\\hieunk\\WebAPI\\ConnectDB\\ConnectDB.csproj": {}
   },
   "projects": {
-    "D:\\WebAPI\\ConnectDB\\ConnectDB.csproj": {
+    "D:\\Code\\hieunk\\WebAPI\\ConnectDB\\ConnectDB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\WebAPI\\ConnectDB\\ConnectDB.csproj",
+        "projectUniqueName": "D:\\Code\\hieunk\\WebAPI\\ConnectDB\\ConnectDB.csproj",
         "projectName": "ConnectDB",
-        "projectPath": "D:\\WebAPI\\ConnectDB\\ConnectDB.csproj",
+        "projectPath": "D:\\Code\\hieunk\\WebAPI\\ConnectDB\\ConnectDB.csproj",
         "packagesPath": "C:\\Users\\fitthuctap33\\.nuget\\packages\\",
-        "outputPath": "D:\\WebAPI\\ConnectDB\\obj\\",
+        "outputPath": "D:\\Code\\hieunk\\WebAPI\\ConnectDB\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,6 +44,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[11.0.2, )"
+            },
+            "Oracle.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.21.9, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
