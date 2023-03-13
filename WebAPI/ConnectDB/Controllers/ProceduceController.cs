@@ -60,11 +60,11 @@ namespace ConnectDB.Controllers
 
                 int success = ((OracleDecimal)command.Parameters["success"].Value).ToInt32();
                 
-
+                connection.Close();
                 // Xử lý kết quả
                 if (success == 1)
                 {
-                    return Created( new { message = "Cập nhật dữ liệu thành công!" });
+                    return CreatedAtAction(nameof(UpdateBuyer), new { id = buyer.id }, new { message = "Cập nhật dữ liệu thành công!" });
                 }
                 else
                 {
@@ -78,9 +78,34 @@ namespace ConnectDB.Controllers
             }
         }
 
-        private IActionResult Created(object value)
+        [HttpDelete]
+        [Route("deleteBuyer")]
+        public IActionResult deleteBuyer(int id_del)
         {
-            throw new NotImplementedException();
+            var connection = new OracleConnection(connectionString);
+            try
+            {
+                connection.Open();
+                var command = new OracleCommand("deleteBuyer", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("id", OracleDbType.Varchar2, ParameterDirection.Input).Value = id_del;
+                command.Parameters.Add("out_success", OracleDbType.Int32, ParameterDirection.Output);
+                command.ExecuteNonQuery();
+
+                int success = ((OracleDecimal)command.Parameters["out_success"].Value).ToInt32();
+                connection.Close();
+                if (success == 1)
+                {
+                    return Ok(new { message = "Xóa dữ liệu thành công!"});
+                }
+                else
+                {
+                    return Ok(new { message = "Xóa dữ liệu thất bại!" });
+                }
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
