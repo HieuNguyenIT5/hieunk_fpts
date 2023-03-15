@@ -1,8 +1,5 @@
 {
-  "Hung": {
-    "name": "Hung",
-    "age": "31",
-    "gender": "Hiếu",
-    "height": "1.4"
-  }
+  "name": "Nguyễn Khắc Hiếu",
+  "age": "22",
+  "address": "Hà Nội"
 }

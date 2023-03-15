@@ -3057,6 +3057,25 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
+      },
+      "WriteFile/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Mvc": "2.2.0",
+          "Microsoft.Extensions.Configuration": "7.0.0",
+          "Microsoft.Extensions.Configuration.Json": "7.0.0",
+          "Swashbuckle.AspNetCore": "6.2.3"
+        },
+        "compile": {
+          "bin/placeholder/WriteFile.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WriteFile.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -8553,6 +8572,11 @@
         "system.xml.xpath.xdocument.4.3.0.nupkg.sha512",
         "system.xml.xpath.xdocument.nuspec"
       ]
+    },
+    "WriteFile/1.0.0": {
+      "type": "project",
+      "path": "../WriteFIle/WriteFile.csproj",
+      "msbuildProject": "../WriteFIle/WriteFile.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -8560,7 +8584,8 @@
       "Microsoft.AspNetCore.Mvc >= 2.2.0",
       "Microsoft.Extensions.Configuration >= 7.0.0",
       "Microsoft.Extensions.Configuration.Json >= 7.0.0",
-      "Swashbuckle.AspNetCore >= 6.2.3"
+      "Swashbuckle.AspNetCore >= 6.2.3",
+      "WriteFile >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -8594,7 +8619,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Code\\hieunk\\WebAPI\\WriteFIle\\WriteFile.csproj": {
+              "projectPath": "D:\\Code\\hieunk\\WebAPI\\WriteFIle\\WriteFile.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

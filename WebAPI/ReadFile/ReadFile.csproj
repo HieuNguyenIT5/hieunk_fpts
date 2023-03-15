@@ -17,4 +17,8 @@
     <Folder Include="InputFolder\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WriteFIle\WriteFile.csproj" />
+  </ItemGroup>
+
 </Project>
