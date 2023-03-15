@@ -73,14 +73,4 @@ public class BuyerProceduce : IProceduceModel
         connection.Close();
         return json;
     }
-
-    public bool Create(OracleConnection connection, object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool Update(OracleConnection connection, object obj)
-    {
-        throw new NotImplementedException();
-    }
 }
