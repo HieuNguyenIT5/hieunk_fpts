@@ -2,21 +2,22 @@
 using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
 using System.Data;
+using WebAPI.Models;
 
 namespace WebAPI;
 
-public class BuyerProceduce : IProceduceModel
+public class BuyerProceduce : IProceduceModel<Buyer>
 {
-    public bool Create(OracleConnection connection, Buyer buyer)
+    public bool Create(OracleConnection connection, Buyer obj)
     {
         try
         {
             connection.Open();
             var command = new OracleCommand("addBuyer", connection);
             command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.Add("id", OracleDbType.Int32, ParameterDirection.Input).Value = buyer.id;
-            command.Parameters.Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.name;
-            command.Parameters.Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.paymentmethod;
+            command.Parameters.Add("id", OracleDbType.Int32, ParameterDirection.Input).Value = obj.id;
+            command.Parameters.Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value = obj.name;
+            command.Parameters.Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = obj.paymentmethod;
             command.ExecuteNonQuery();
             connection.Close();
             return true;
@@ -27,14 +28,14 @@ public class BuyerProceduce : IProceduceModel
         }
     }
 
-    public bool Update(OracleConnection connection, Buyer buyer)
+    public bool Update(OracleConnection connection, Buyer obj)
     {
         connection.Open();
         var command = new OracleCommand("updateBuyer", connection);
         command.CommandType = CommandType.StoredProcedure;
-        command.Parameters.Add("id", OracleDbType.Int32, ParameterDirection.Input).Value = buyer.id;
-        command.Parameters.Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.name;
-        command.Parameters.Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.paymentmethod;
+        command.Parameters.Add("id", OracleDbType.Int32, ParameterDirection.Input).Value = obj.id;
+        command.Parameters.Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value = obj.name;
+        command.Parameters.Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = obj.paymentmethod;
         command.Parameters.Add("success", OracleDbType.Int32, ParameterDirection.Output);
         // Thực thi stored procedure
         command.ExecuteNonQuery();

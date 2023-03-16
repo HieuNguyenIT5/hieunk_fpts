@@ -5,7 +5,7 @@ using System.Data;
 using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
 using System.Text;
-using WebAPI;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -14,7 +14,7 @@ namespace WebAPI.Controllers
     public class buyerController : ControllerBase
     {
         private readonly string _connectionString;
-        private IProceduceModel _proceduce;
+        private IProceduceModel<Buyer> _proceduce;
         public buyerController(IConfiguration config)
         {
             _connectionString = config.GetValue<string>("ConnectionString");
