@@ -19,13 +19,6 @@ namespace WebApplication1.EntityConfigurations
                 .Property(c => c.address)
                 .IsRequired()
                 .HasMaxLength(500);
-            builder
-                .HasOne(o => o.Buyer)
-                .WithMany(b => b.Orders)
-                .HasForeignKey(o => o.BuyerId)
-                .HasPrincipalKey(b => b.id)
-                .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired(false);
         }
     }
 }

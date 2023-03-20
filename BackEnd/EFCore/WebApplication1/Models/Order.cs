@@ -9,16 +9,11 @@ namespace WebApplication1.Models
     {
         public DateTime CreateDate { get; set; } = DateTime.Now;
 
-        [Required]
         public int Status{ get; set; }
 
-        [Required]
         public int BuyerId{ get; set; }
 
-        [Required]
         public string address{ get; set; }
-
-        public virtual Buyer Buyer { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual List<OrderItem>? items { get; set; }
     }
 }

@@ -59,3 +59,4 @@ D:\Code\hieunk\BackEnd\EFCore\WebApplication1\bin\Debug\net6.0\Microsoft.Extensi
 D:\Code\hieunk\BackEnd\EFCore\WebApplication1\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Code\hieunk\BackEnd\EFCore\WebApplication1\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
 D:\Code\hieunk\BackEnd\EFCore\WebApplication1\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+D:\Code\hieunk\BackEnd\EFCore\WebApplication1\bin\Debug\net6.0\Newtonsoft.Json.dll

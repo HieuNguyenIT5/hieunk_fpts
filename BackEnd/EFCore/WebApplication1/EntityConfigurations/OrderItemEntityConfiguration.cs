@@ -11,6 +11,7 @@ namespace WebApplication1.EntityConfigurations
             builer
                 .Property(c => c.OrderId)
                 .IsRequired();
+            builer.HasKey(o => new { o.OrderId, o.ProductId });
             builer
                 .Property(c => c.ProductId)
                 .IsRequired();
@@ -20,14 +21,6 @@ namespace WebApplication1.EntityConfigurations
             builer
                 .Property(c => c.UnitPrice)
                 .IsRequired();
-            builer
-                .HasOne(c => c.Order)
-                .WithMany(d => d.OrderItems)
-                .HasForeignKey(c => c.OrderId)
-                .HasPrincipalKey(d => d.id)
-                .OnDelete(DeleteBehavior.Cascade)
-                .IsRequired(false);
-
         }
     }
 }

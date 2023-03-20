@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using WebApplication1.Models;
@@ -11,9 +12,10 @@ using WebApplication1.Models;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(OraDbContext))]
-    partial class OraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230320051312_UpdateOrderModel")]
+    partial class UpdateOrderModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,6 +78,12 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.OrderItem", b =>
                 {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
                     b.Property<int>("OrderId")
                         .HasColumnType("NUMBER(10)");
 
@@ -88,7 +96,9 @@ namespace WebApplication1.Migrations
                     b.Property<int>("Units")
                         .HasColumnType("NUMBER(10)");
 
-                    b.HasKey("OrderId", "ProductId");
+                    b.HasKey("id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderItem");
                 });
