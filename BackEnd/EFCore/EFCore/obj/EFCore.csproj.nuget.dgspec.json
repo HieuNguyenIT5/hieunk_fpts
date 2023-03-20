@@ -52,6 +52,14 @@
               "target": "Package",
               "version": "[6.0.15, )"
             },
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "Oracle.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.21.90, )"

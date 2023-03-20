@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EF_Core.Models
+namespace WebApplication1.Models
 {
     public class Entity
     {

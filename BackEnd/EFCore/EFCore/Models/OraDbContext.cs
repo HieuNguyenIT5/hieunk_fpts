@@ -1,9 +1,9 @@
-﻿using EF_Core.EntityConfigurations;
+﻿using WebApplication1.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Oracle.EntityFrameworkCore;
 using System.Diagnostics;
 
-namespace EF_Core.Models
+namespace WebApplication1.Models
 {
     public class OraDbContext : DbContext
     {
@@ -21,7 +21,10 @@ namespace EF_Core.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new BuyerEntityConfiguration());
+            modelBuilder
+                .ApplyConfiguration(new BuyerEntityConfiguration())
+                .ApplyConfiguration(new OrderEntityConfiguration())
+                .ApplyConfiguration(new OrderItemEntityConfiguration());
         }
     }
 }

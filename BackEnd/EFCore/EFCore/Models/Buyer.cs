@@ -1,17 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EF_Core.Models
+namespace WebApplication1.Models
 {
     [Table("Buyer")]
     public class Buyer : Entity
     {
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public Buyer()
+        {
+            Orders = new HashSet<Order>();
+        }
+        public virtual ICollection<Order> Orders { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string PaymmentMethod  { get; set; } = string.Empty;
+        public string Name { get; set; }
+
+        public string PaymentMethod { get; set; }
     }
 }

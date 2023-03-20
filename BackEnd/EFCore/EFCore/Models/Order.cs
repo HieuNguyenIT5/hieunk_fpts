@@ -1,20 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebApplication1.Models;
 
-namespace EF_Core.Models
+namespace WebApplication1.Models
 {
     [Table("Order")]
     public class Order : Entity
     {
         public DateTime CreateDate { get; set; } = DateTime.Now;
 
-        [Required]
-        public int Status{ get; set; } = 0;
+        public int Status{ get; set; }
 
-        [Required]
         public int BuyerId{ get; set; }
 
-        [Required]
-        public string address{ get; set; } = string.Empty;
+        public string address{ get; set; }
+        public virtual List<OrderItem>? items { get; set; }
     }
 }

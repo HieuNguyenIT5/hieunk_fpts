@@ -1,14 +1,24 @@
-﻿using EF_Core.Models;
+﻿using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EF_Core.EntityConfigurations;
-
-public class BuyerEntityConfiguration : IEntityTypeConfiguration<Buyer>
+namespace WebApplication1.EntityConfigurations
 {
-    public void Configure(EntityTypeBuilder<Buyer> builder)
+    public class BuyerEntityConfiguration : IEntityTypeConfiguration<Buyer>
     {
-        builder.HasKey(c => c.id);
-        builder.Property(c => c.id).IsRequired();
+        public void Configure(EntityTypeBuilder<Buyer> builder)
+        {
+            builder.HasKey(c => c.id);
+            builder.Property(c => c.id).IsRequired();
+
+            builder
+                .Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder
+                .Property(c => c.PaymentMethod)
+                .IsRequired()
+                .HasMaxLength(50);
+        }
     }
 }
