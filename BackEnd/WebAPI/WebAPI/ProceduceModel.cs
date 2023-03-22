@@ -9,6 +9,6 @@ namespace WebAPI
         public bool Create(OracleConnection connection, T obj);
         public bool Update(OracleConnection connection, T obj);
         public bool Delete(OracleConnection connection, int id);
-        public string Get(OracleConnection connection);
+        public string Get (OracleConnection connection);
     }
 }

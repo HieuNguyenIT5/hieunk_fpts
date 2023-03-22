@@ -7,8 +7,8 @@ namespace WebApplication1.Models;
 
 public class OraDbContext : DbContext
 {
-    public DbSet<Buyer> Buyer { get; set; }
-    public DbSet<Order> Order { get; set; }
+    public DbSet<Buyer> Buyer         { get; set; }
+    public DbSet<Order> Order         { get; set; }
     public DbSet<OrderItem> OrderItem { get; set; }
     public OraDbContext(DbContextOptions<OraDbContext> options):base(options)
     {

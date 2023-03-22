@@ -27,11 +27,17 @@ namespace ConnectDB.Controllers
             try
             {
                 connection.Open();
-                var command = new OracleCommand("addBuyer", connection);
+                var command         = new OracleCommand("addBuyer", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add("id", OracleDbType.Int32, ParameterDirection.Input).Value = buyer.id;
-                command.Parameters.Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.name;
-                command.Parameters.Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.paymentmethod;
+                command
+                    .Parameters
+                    .Add("id", OracleDbType.Int32, ParameterDirection.Input).Value               = buyer.id;
+                command
+                    .Parameters
+                    .Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value          = buyer.name;
+                command
+                    .Parameters
+                    .Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.paymentmethod;
                 command.ExecuteNonQuery();
                 return Ok(new { message = "Thêm dữ liệu thành công!" });
             }
@@ -51,10 +57,17 @@ namespace ConnectDB.Controllers
                 connection.Open();
                 var command = new OracleCommand("updateBuyer", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add("id", OracleDbType.Int32, ParameterDirection.Input).Value = buyer.id;
-                command.Parameters.Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.name;
-                command.Parameters.Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.paymentmethod;
-                command.Parameters.Add("success", OracleDbType.Int32, ParameterDirection.Output);
+                command
+                    .Parameters
+                    .Add("id", OracleDbType.Int32, ParameterDirection.Input).Value               = buyer.id;
+                command
+                    .Parameters
+                    .Add("name", OracleDbType.Varchar2, ParameterDirection.Input).Value          = buyer.name;
+                command
+                    .Parameters
+                    .Add("paymentMethod", OracleDbType.Varchar2, ParameterDirection.Input).Value = buyer.paymentmethod;
+                command
+                    .Parameters.Add("success", OracleDbType.Int32, ParameterDirection.Output);
                 // Thực thi stored procedure
                 command.ExecuteNonQuery();
                 // Lấy giá trị trả về từ output parameter
@@ -65,7 +78,11 @@ namespace ConnectDB.Controllers
                 // Xử lý kết quả
                 if (success == 1)
                 {
-                    return CreatedAtAction(nameof(UpdateBuyer), new { id = buyer.id }, new { message = "Cập nhật dữ liệu thành công!" });
+                    return CreatedAtAction(
+                        nameof(UpdateBuyer), 
+                        new { id = buyer.id }, 
+                        new { message = "Cập nhật dữ liệu thành công!" }
+                    );
                 }
                 else
                 {

@@ -28,10 +28,10 @@ public class CheckoutController : ControllerBase
                 _db.SaveChanges();
                 foreach(var item in basket)
                 {
-                    var orderItem = new OrderItem();
-                    orderItem.OrderId = order.id;
+                    var orderItem       = new OrderItem();
+                    orderItem.OrderId   = order.id;
                     orderItem.ProductId = item.ProductId;
-                    orderItem.Units = item.Units;
+                    orderItem.Units     = item.Units;
                     orderItem.UnitPrice = item.UnitPrice;
                     _db.OrderItem.Add(orderItem);
                     _db.SaveChanges();

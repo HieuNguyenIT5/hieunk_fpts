@@ -9,7 +9,6 @@ namespace WebApplication1.Controllers;
 public class BasketController : ControllerBase
 {
     private readonly IMemoryCache _cache;
-
     public BasketController(IMemoryCache cache)
     {
         _cache = cache;
@@ -40,7 +39,10 @@ public class BasketController : ControllerBase
         // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng hay chưa
         if (_cache.TryGetValue(cartKey, out List<Basket> cart))
         {
-            var existingProduct = cart.FirstOrDefault(p => p.ProductId == basket.ProductId);
+            var existingProduct = 
+                cart.FirstOrDefault(
+                    p => p.ProductId == basket.ProductId
+                );
             if (existingProduct != null)
             {
                 // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên

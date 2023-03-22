@@ -52,8 +52,8 @@ public class BuyerController : ControllerBase
             {
                 return NotFound(new { message = "Không tìm thấy người mua với Id tương ứng!" });
             }
-            buyerOld.Name = buyer.Name;
-            buyerOld.PaymentMethod = buyer.PaymentMethod;
+            buyerOld.Name           = buyer.Name;
+            buyerOld.PaymentMethod  = buyer.PaymentMethod;
             _dbContext.SaveChanges();
             return Ok(new { message = "Cập nhật người mua thành công!" });
         }
