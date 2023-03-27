@@ -23,14 +23,25 @@ namespace WorkerService1
 
         public async Task RunAsync()
         {
-            while(true)
+            var topic = "";
+            do
             {
                 Console.WriteLine("Nhap topic: ");
-                var topic = Console.ReadLine();
-                Console.WriteLine("Nhap message");
-                var message = Console.ReadLine();
-                await ProduceAsync(topic, message);
-            }
+                topic = Console.ReadLine();
+                if (topic != "")
+                {
+                    while (true)
+                    {
+                        Console.WriteLine("Nhap message");
+                        var message = Console.ReadLine();
+                        await ProduceAsync(topic, message);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Ten topic khong duoc bo trong!");
+                }
+            } while (topic == "");
         }
     }
 }

@@ -10,7 +10,7 @@ IHost consume = Host.CreateDefaultBuilder(args)
             var consumerConfig = new ConsumerConfig
             {
                 BootstrapServers = bootstrapServers,
-                GroupId = "group3",
+                GroupId = "group1",
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
             return new ConsumerBuilder<Ignore, string>(consumerConfig).Build();

@@ -21,7 +21,9 @@ namespace WorkerService2
         {
             await Task.Run(() =>
             {
-                _consumer.Subscribe("test-topic1");
+                Console.WriteLine("Nhap ten topic: ");
+                var topic = Console.ReadLine();
+                _consumer.Subscribe(topic);
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var result = _consumer.Consume();
