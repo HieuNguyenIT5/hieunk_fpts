@@ -1,0 +1,12 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Account.Domain.AggregateModels;
+[Table("Revenue")]
+public class Revenue
+{
+    public int RevenueId { get; set; }
+    public int OrderId { get; set; }
+    public decimal Total { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public Order Order { get; set; } = new Order();
+}
