@@ -3,7 +3,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Order.App.Application.Command;
+using Order.App.Services;
 using Order.Infrastructure;
+using Order.App.Settings;
 using System.Net;
 using System.Net.Mail;
 using System.Reflection;
@@ -18,36 +21,28 @@ public static class ServiceCollectionExtension
         services.AddKafkaConsumer();
         services.AddDbContext(configuration);
         services.AddMediator();
-        services.AddSendMail();
+        services.AddSendMail(configuration);
         return services;
     }
 
     public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<DbContextModel>();
+        //services.AddSingleton<DbContextModel>();
         services.AddDbContext<DbContextModel>(options =>
         {
             options.UseOracle(configuration.GetConnectionString("OraDbConnection"));
         });
         return services;
     }
-    public static IServiceCollection AddSendMail(this IServiceCollection services)
+    public static IServiceCollection AddSendMail(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<SmtpClient>(sp =>
-        {
-            var client = new SmtpClient("smtp.gmail.com", 587)
-            {
-                EnableSsl = true,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("musicscendy@gmail.com", "Hieuscendy178@")
-            };
-            return client;
-        });
+        services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+        services.AddTransient<IMailService, Services.MailService>();
         return services;
     }
 public static IServiceCollection AddMediator(this IServiceCollection services)
     {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddMediatR(typeof(SendMailCommand));
         return services;
     }
 
@@ -59,7 +54,8 @@ public static IServiceCollection AddMediator(this IServiceCollection services)
             {
                 BootstrapServers = "localhost:9092",
                 GroupId = "group1",
-                AutoOffsetReset = AutoOffsetReset.Earliest
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+                EnableAutoCommit = false
             };
             return new ConsumerBuilder<string, string>(consumerConfig).Build();
         });

@@ -1,6 +1,5 @@
 ﻿using Confluent.Kafka;
 using MediatR;
-using Order.Domain.AggregateModels;
 
 namespace Order.App.Application.Command
 {

@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace Order.Domain.AggregateModels;
+﻿namespace Order.Domain.AggregateModels;
 
 public abstract class Entity
 {

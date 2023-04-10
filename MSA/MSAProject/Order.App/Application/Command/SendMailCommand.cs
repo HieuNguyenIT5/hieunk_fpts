@@ -1,13 +1,13 @@
 ﻿using MediatR;
+using Order.App.Services;
 
 namespace Order.App.Application.Command;
 public class SendMailCommand : IRequest
 {
-    public string message { get; set; }
-    public string  email{ get; set; }
-    public SendMailCommand(string message, string email)
+    public MailRequest MailRequest{ get; set; }
+
+    public SendMailCommand(MailRequest mailRequest)
     {
-        this.email = email;
-        this.message = message;
+        this.MailRequest = mailRequest;
     }
 }
