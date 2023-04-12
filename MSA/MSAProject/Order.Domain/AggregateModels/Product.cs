@@ -14,4 +14,12 @@ public class Product
     {
         return this.Quantity >= qty ? true : false;
     }
+    public void minusQuantity(int number)
+    {
+        this.Quantity -= number;
+    }
+    public void plusQuantitySold(int number) 
+    {
+        this.QuantitySold += number;
+    }
 }

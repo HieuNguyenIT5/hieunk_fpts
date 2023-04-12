@@ -5,11 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Order.App.Application.Command;
 using Order.App.Services;
-using Order.Infrastructure;
 using Order.App.Settings;
-using System.Net;
-using System.Net.Mail;
-using System.Reflection;
+using Order.Infrastructure;
 
 namespace Order.App.Extensions;
 
@@ -40,9 +37,9 @@ public static class ServiceCollectionExtension
         services.AddTransient<IMailService, Services.MailService>();
         return services;
     }
-public static IServiceCollection AddMediator(this IServiceCollection services)
+    public static IServiceCollection AddMediator(this IServiceCollection services)
     {
-        services.AddMediatR(typeof(SendMailCommand));
+        services.AddMediatR(typeof(OrderCommand));
         return services;
     }
 
@@ -53,9 +50,9 @@ public static IServiceCollection AddMediator(this IServiceCollection services)
             var consumerConfig = new ConsumerConfig
             {
                 BootstrapServers = "localhost:9092",
-                GroupId = "group1",
+                GroupId = "group2",
                 AutoOffsetReset = AutoOffsetReset.Earliest,
-                EnableAutoCommit = false
+                EnableAutoCommit = true,
             };
             return new ConsumerBuilder<string, string>(consumerConfig).Build();
         });

@@ -14,12 +14,13 @@ public class OrderItem : Entity
     //public virtual Product Product { get; set; }= new Product();
     //public virtual Customer Customer { get; set; }= new Customer();
     //public Revenue Revenue { get; set; } = new Revenue();
-    public OrderItem(string CustomerId, int ProductId, int Quantity, decimal Price) {
+    public OrderItem(string CustomerId, int ProductId, int Quantity, decimal Price, string IP) {
         this.OrderId = 0;
         this.CustomerId = CustomerId;
         this.ProductId = ProductId;
         this.Quantity = Quantity;
         this.Price = Price;
+        this.IP = IP;
     }
     public OrderItem()
     {

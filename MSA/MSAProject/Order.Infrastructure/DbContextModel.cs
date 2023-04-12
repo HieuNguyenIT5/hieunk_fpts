@@ -17,6 +17,7 @@ public class DbContextModel : DbContext
     public DbContextModel(DbContextOptions options) : base(options)
     {
     }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);

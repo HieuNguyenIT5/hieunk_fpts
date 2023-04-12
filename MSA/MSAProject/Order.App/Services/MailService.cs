@@ -24,7 +24,6 @@ public class MailService : IMailService
         builder.HtmlBody = mailRequest.Body;
         email.Body = builder.ToMessageBody();
         using var smtp = new SmtpClient();
-        smtp.ProxyClient = new HttpProxyClient("10.26.2.55", 8080);
         smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
         smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
         smtp.Send(email);
