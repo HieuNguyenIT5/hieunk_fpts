@@ -1,14 +1,13 @@
-﻿using Confluent.Kafka;
-using MediatR;
+﻿using MediatR;
+using Order.Domain.AggregateModels;
+using System.Collections.Generic;
 
-namespace Order.App.Application.Command
+namespace Order.App.Application.Command;
+public class OrderCommand : IRequest
 {
-    public class OrderCommand : IRequest
+    public List<OrderItem> Data{ get; set; }
+    public OrderCommand(List<OrderItem> data)
     {
-        public ConsumeResult<string, string> consumer { get; set; }
-        public OrderCommand(ConsumeResult<string, string> consumer)
-        {
-            this.consumer = consumer;
-        }
+        this.Data = data;
     }
 }

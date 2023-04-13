@@ -1,5 +1,9 @@
 ﻿using Order.App.Services;
 using MediatR;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
+
 namespace Order.App.Application.Command;
 public class SendMailCommandHandler : IRequestHandler<SendMailCommand>
 {
@@ -9,17 +13,17 @@ public class SendMailCommandHandler : IRequestHandler<SendMailCommand>
         this.mailService = mailService;
     }
 
-    Task<Unit> IRequestHandler<SendMailCommand, Unit>.Handle(SendMailCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(SendMailCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            mailService.SendEmail(request.MailRequest);
-            return default;
+            await mailService.SendEmail(request.MailRequest);
+            return Unit.Value;
         }
         catch (Exception ex)
         {
+            // Xử lý exception ở đây nếu cần
             throw;
         }
-        return default;
     }
 }

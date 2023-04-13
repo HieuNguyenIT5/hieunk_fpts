@@ -8,8 +8,7 @@ IHost OrderProcess = Host.CreateDefaultBuilder(args)
     {
         var configuration = context.Configuration;
         services.AddConfiguration(configuration);
-        //services.AddHostedService<OrderBackgroundTask>();
-        services.AddHostedService<TestBackgroundTask>();
+        services.AddHostedService<OrderBackgroundTask>();
     })
     .Build();
 await OrderProcess.RunAsync();

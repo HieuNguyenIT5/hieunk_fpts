@@ -2,7 +2,7 @@
 
 namespace Order.Infrastructure.Repositories
 {
-    public class CustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly DbContextModel _dbContext;
         public CustomerRepository(DbContextModel dbContext)

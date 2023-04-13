@@ -1,4 +1,6 @@
-﻿namespace Order.App.Services;
+﻿using System.Threading.Tasks;
+
+namespace Order.App.Services;
 
 public interface IMailService
 {

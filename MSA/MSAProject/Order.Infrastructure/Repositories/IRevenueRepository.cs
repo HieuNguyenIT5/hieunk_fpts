@@ -9,6 +9,6 @@ namespace Order.Infrastructure.Repositories
 {
     public interface IRevenueRepository
     {
-        public Revenue Add(int orderId, decimal total);
+        public void Add(int orderId, decimal total);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Order.Infrastructure.Repositories;
 
-public class RevenueRepository
+public class RevenueRepository : IRevenueRepository
 {
     private readonly DbContextModel _dbContext;
     public RevenueRepository(DbContextModel dbContext)

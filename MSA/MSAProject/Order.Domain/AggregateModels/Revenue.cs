@@ -6,12 +6,12 @@ namespace Order.Domain.AggregateModels;
 public class Revenue
 {
     [Key]
-    public int RevenueId { get; set; }
+    public int RevenueId { get; set; } = default(int);
     public int OrderId { get; set; }
     public decimal Total { get; set; }
     public DateTime CreatedAt { get; set; }
 
-    public Revenue(int orderId, decimal total) 
+    public Revenue(int orderId, decimal total)
     { 
         OrderId = orderId;
         Total = total;

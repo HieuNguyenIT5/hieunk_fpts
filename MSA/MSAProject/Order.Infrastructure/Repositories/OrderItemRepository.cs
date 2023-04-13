@@ -15,9 +15,10 @@ public class OrderItemRepository : IOrderItemRepository
         _dbContext.OrderItem.Add(newOrderItem);
         _dbContext.SaveChanges();
     }
-    public int getLastOrderId()
+    public int GetLastOrderId()
     {
-        var order = _dbContext.OrderItem.OrderBy(r => r.OrderId).LastOrDefault();
-        return order.OrderId;
+        var order = _dbContext.OrderItem.OrderByDescending(r => r.OrderId).FirstOrDefault();
+        int id = order != null ? order.OrderId : 0;
+        return id;
     }
 }
