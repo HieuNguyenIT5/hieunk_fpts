@@ -43,9 +43,11 @@ public class OrderBackgroundTask : BackgroundService
                 {
                     string messageComsumer = consumeResult.Message.Value;
                     dynamic message        = JsonSerializer.Deserialize<JsonElement>(messageComsumer);
-                    var data               = JsonSerializer.Deserialize<List<OrderItem>>(message.GetProperty("data"));
-                    if (data != null)
+                    bool success           = message.GetProperty("success").GetBoolean();
+
+                    if (success)
                     {
+                        var data = JsonSerializer.Deserialize<List<OrderItem>>(message.GetProperty("data"));
                         _mediator.Send(new OrderCommand(data));
 
                     }
