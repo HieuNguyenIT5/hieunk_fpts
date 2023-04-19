@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 namespace Account.Domain.AggregateModels;
 
-[Table("Products")]
 public class Product
 {
     public int ProductId { get; set; }

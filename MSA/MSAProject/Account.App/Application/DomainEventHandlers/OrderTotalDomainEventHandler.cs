@@ -1,8 +1,5 @@
-﻿using Account.Domain.AggregateModels;
-using Account.Domain.Events;
+﻿using Account.Domain.Events;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
 
 namespace Account.App.Application.DomainEventHandlers
 {

@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Order.Domain.AggregateModels;
-[Table("Revenue")]
 public class Revenue
 {
     [Key]

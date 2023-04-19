@@ -9,9 +9,9 @@ public class OrderItemRepository : IOrderItemRepository
     {
         this._dbContext = dbContext;
     }
-    public void AddOrderItem(string CustomerId, int ProductId, int Quantity, decimal Price, string IP)
+    public void AddOrderItem(string CustomerId, int ProductId, int Quantity, decimal Price, string IP, int status)
     {
-        var newOrderItem = new OrderItem(CustomerId, ProductId, Quantity, Price, IP);
+        var newOrderItem = new OrderItem(CustomerId, ProductId, Quantity, Price, IP, 1);
         _dbContext.OrderItem.Add(newOrderItem);
         _dbContext.SaveChanges();
     }

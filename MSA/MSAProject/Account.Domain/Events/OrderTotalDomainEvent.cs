@@ -2,7 +2,6 @@
 using MediatR;
 
 namespace Account.Domain.Events;
-
 public class OrderTotalDomainEvent : IRequest<decimal>
 {
     public List<Order> Orders { get; set; }

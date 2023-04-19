@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Account.Domain.AggregateModels;
-[Table("Revenue")]
+﻿namespace Account.Domain.AggregateModels;
 public class Revenue
 {
     public int RevenueId { get; set; }

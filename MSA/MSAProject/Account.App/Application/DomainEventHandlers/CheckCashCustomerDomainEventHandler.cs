@@ -1,15 +1,13 @@
 ﻿using Account.Domain.Events;
-using MediatR;
 using Account.Infrastructure;
+using MediatR;
 using System.Text.Json;
-using Account.Domain.AggregateModels;
-using Confluent.Kafka;
 
 namespace Account.App.Application.DomainEventHandlers;
-public class CheckCashCustomerEventHandler : IRequestHandler<CheckCashCustomerDomainEvent,string>
+public class CheckCashCustomerDomainEventHandler : IRequestHandler<CheckCashCustomerDomainEvent,string>
 {
     private readonly DbContextModel _db;
-    public CheckCashCustomerEventHandler(DbContextModel db)
+    public CheckCashCustomerDomainEventHandler(DbContextModel db)
     {
         _db = db;
     }

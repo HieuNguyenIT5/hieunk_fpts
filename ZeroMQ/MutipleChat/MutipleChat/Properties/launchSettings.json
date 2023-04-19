@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MutipleChat": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

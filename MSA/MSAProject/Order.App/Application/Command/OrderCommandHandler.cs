@@ -1,13 +1,10 @@
 ﻿using MediatR;
+using Order.App.Common;
 using Order.App.Services;
-using Order.Domain.AggregateModels;
 using Order.Infrastructure;
 using Order.Infrastructure.Repositories;
-using Order.App.Common;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Threading;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Order.App.Application.Command;
 public class OrderCommandHandler : IRequestHandler<OrderCommand>
@@ -17,14 +14,12 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
     private IProductRepository _productRepo;
     private IOrderItemRepository _orderItemRepo;
     private IRevenueRepository _revenueRepo;
-    private ICustomerRepository _customerRepo;
     public OrderCommandHandler(
          DbContextModel db,
          IMediator mediator,
          IProductRepository productRepo,
          IOrderItemRepository orderItemRepo,
          IRevenueRepository revenueRepo,
-         ICustomerRepository customerRepo
      )
     {
         _db = db;
@@ -32,7 +27,6 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
         _productRepo = productRepo;
         _orderItemRepo = orderItemRepo;
         _revenueRepo = revenueRepo;
-        _customerRepo = customerRepo;
     }
 
     public Task<Unit> Handle(OrderCommand request, CancellationToken cancellationToken)
@@ -40,16 +34,16 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
         bool checkQuantity = true;
         decimal totalCash = 0;
         string body = "";
-        bool success = true;
         foreach (var item in request.Data)
         {
             var product = _db.Products.Find(item.ProductId);
             checkQuantity = product != null ? product.checkQuantity(item.Quantity) : false;
+            var subTotal = item.SubTotal();
+
             if (checkQuantity)
             {
-                var subTotal = item.SubTotal();
+                _orderItemRepo.AddOrderItem(item.CustomerId, item.ProductId, item.Quantity, item.Price, item.IP, 1);
                 var orderId = _orderItemRepo.GetLastOrderId();
-                _orderItemRepo.AddOrderItem(item.CustomerId, item.ProductId, item.Quantity, item.Price, item.IP);
                 _productRepo.minusQuantity(item.ProductId, item.Quantity);
                 _productRepo.plusQuantitySold(item.ProductId, item.Quantity);
                 _revenueRepo.Add(orderId, subTotal);
@@ -58,15 +52,10 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
             }
             else
             {
-                body = "San pham khong du so luong";
-                success = false;
-                break;
+                _orderItemRepo.AddOrderItem(item.CustomerId, item.ProductId, item.Quantity, item.Price, item.IP, 0);
             }
         }
-        if (success)
-        {
-            body = Constants.BEGINBODY + body + Constants.ENDBODY;
-        }
+        body = Constants.BEGINBODY + body + Constants.ENDBODY;
         var mailRequest =
             new MailRequest(
                 "arnulfo78@ethereal.email",

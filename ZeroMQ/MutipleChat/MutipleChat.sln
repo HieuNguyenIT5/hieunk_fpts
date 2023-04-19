@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MutipleChat", "MutipleChat\MutipleChat.csproj", "{1E391278-9957-44BF-846D-708DACD27025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MutipleChat2", "MutipleChat2\MutipleChat2.csproj", "{4FC15148-5D56-46E9-9F08-D06673279765}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E391278-9957-44BF-846D-708DACD27025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E391278-9957-44BF-846D-708DACD27025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E391278-9957-44BF-846D-708DACD27025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E391278-9957-44BF-846D-708DACD27025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FC15148-5D56-46E9-9F08-D06673279765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FC15148-5D56-46E9-9F08-D06673279765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FC15148-5D56-46E9-9F08-D06673279765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FC15148-5D56-46E9-9F08-D06673279765}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4969173-FE81-4045-B469-C03CD27F8901}
+	EndGlobalSection
+EndGlobal

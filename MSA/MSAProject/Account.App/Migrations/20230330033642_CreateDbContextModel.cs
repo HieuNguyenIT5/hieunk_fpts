@@ -52,7 +52,8 @@ namespace Account.App.Migrations
                     Quantity = table.Column<int>(type: "NUMBER(10)", nullable: false),
                     Price = table.Column<decimal>(type: "DECIMAL(18, 2)", nullable: false),
                     DateTime = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false),
-                    IP = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false)
+                    IP = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
+                    status = table.Column<int>(type: "NUMBER(10)", nullable: true)
                 },
                 constraints: table =>
                 {

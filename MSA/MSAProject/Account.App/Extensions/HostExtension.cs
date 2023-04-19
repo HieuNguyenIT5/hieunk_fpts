@@ -1,6 +1,5 @@
-﻿namespace Account.App.Extensions
+﻿namespace Account.App.Extensions;
+
+internal class HostExtension
 {
-    public class HostExtension
-    {
-    }
 }
