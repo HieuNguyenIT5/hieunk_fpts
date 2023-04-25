@@ -1,27 +1,14 @@
-﻿using Confluent.Kafka;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Order.App.Application.Command;
-using Order.App.Services;
-using Order.App.Settings;
-using Order.Domain.AggregateModels;
-using Order.Infrastructure;
-using Order.Infrastructure.Repositories;
-using System;
-
-namespace Order.App.Extensions;
+﻿namespace Order.App.Extensions;
 
 public static class ServiceCollectionExtension
 {
-
     public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddKafkaConsumer(configuration);
         services.AddDbContext(configuration);
         services.AddMediator();
         services.AddSendMail(configuration);
+        services.AddPubZeroMQ(configuration);
         return services;
     }
 
@@ -69,6 +56,17 @@ public static class ServiceCollectionExtension
             };
 
             return new ConsumerBuilder<string, string>(consumerConfig).Build();
+        });
+        return services;
+    }
+
+    public static IServiceCollection AddPubZeroMQ(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddSingleton<INetMQSocket, NetMQSocket>(sp =>
+        {
+            var publisher = new PublisherSocket();
+            publisher.Bind(configuration.GetConnectionString("ZeroMQConnection").ToString());
+            return publisher;
         });
         return services;
     }

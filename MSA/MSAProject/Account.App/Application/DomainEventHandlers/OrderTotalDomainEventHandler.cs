@@ -1,7 +1,4 @@
-﻿using Account.Domain.Events;
-using MediatR;
-
-namespace Account.App.Application.DomainEventHandlers
+﻿namespace Account.App.Application.DomainEventHandlers
 {
     public class OrderTotalDomainEventHandler : IRequestHandler<OrderTotalDomainEvent, decimal>
     {

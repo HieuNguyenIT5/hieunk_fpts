@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
 	  <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>a113ab19-37b7-4344-91eb-46f7704436a1</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +19,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
+    <PackageReference Include="NetMQ" Version="4.0.1.11" />
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
@@ -29,7 +33,6 @@
   <ItemGroup>
     <Folder Include="Application\Commands\" />
     <Folder Include="Application\IntegrationEvents\" />
-    <Folder Include="Application\Queries\" />
   </ItemGroup>
 
 </Project>

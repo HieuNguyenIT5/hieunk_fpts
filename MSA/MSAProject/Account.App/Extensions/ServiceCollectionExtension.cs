@@ -1,10 +1,4 @@
-﻿using Account.Domain.AggregateModels;
-using Account.Infrastructure;
-using Account.Infrastructure.Repositories;
-using Confluent.Kafka;
-using Microsoft.EntityFrameworkCore;
-using System.Configuration;
-using System.Reflection;
+﻿using NetMQ;
 
 namespace Account.App.Extensions;
 public static class ServiceCollectionExtension
@@ -16,20 +10,33 @@ public static class ServiceCollectionExtension
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddDbContext(configuration);
+        services.AddRepositories();
+        services.AddQueries();
         services.AddKafkaConsumer(configuration);
         services.AddKafkaProducer(configuration);
         services.AddMediator();
+        services.AddSubZeroMQ(configuration);
         return services;
     }
 
     public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddDbContext<DbContextModel>(options =>
         {
             options.UseOracle(configuration.GetConnectionString("OraDbConnection"));
         });
+        return services;
+    }
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        return services;
+    }
+    public static IServiceCollection AddQueries(this IServiceCollection services)
+    {
+        services.AddScoped<ICustomerQueries, CustomerQueries>();
+        services.AddScoped<IOrderQueries, OrderQueries>();
         return services;
     }
     public static IServiceCollection AddMediator(this IServiceCollection services)
@@ -74,6 +81,17 @@ public static class ServiceCollectionExtension
             };
 
             return new ConsumerBuilder<string, string>(consumerConfig).Build();
+        });
+        return services;
+    }
+    public static IServiceCollection AddSubZeroMQ(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddSingleton<INetMQSocket, NetMQSocket>(sp =>
+        {
+            var subscriber = new SubscriberSocket();
+            subscriber.Connect(configuration.GetConnectionString("ZeroMQConnection").ToString());
+            subscriber.Subscribe("");
+            return subscriber;
         });
         return services;
     }

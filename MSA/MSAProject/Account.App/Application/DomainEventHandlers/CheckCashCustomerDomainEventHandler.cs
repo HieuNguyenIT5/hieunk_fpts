@@ -1,15 +1,12 @@
-﻿using Account.Domain.Events;
-using Account.Infrastructure;
-using MediatR;
-using System.Text.Json;
-
-namespace Account.App.Application.DomainEventHandlers;
+﻿namespace Account.App.Application.DomainEventHandlers;
 public class CheckCashCustomerDomainEventHandler : IRequestHandler<CheckCashCustomerDomainEvent,string>
 {
-    private readonly DbContextModel _db;
-    public CheckCashCustomerDomainEventHandler(DbContextModel db)
+    private readonly ICustomerRepository _custommerRepo;
+    public CheckCashCustomerDomainEventHandler(
+        ICustomerRepository custommerRepo
+    )
     {
-        _db = db;
+        _custommerRepo = custommerRepo;
     }
 
     public async Task<string> Handle(CheckCashCustomerDomainEvent request, CancellationToken cancellationToken)
@@ -18,7 +15,7 @@ public class CheckCashCustomerDomainEventHandler : IRequestHandler<CheckCashCust
         {
            return string.Empty;
         }
-        var customer = _db.Customers.Find(request.orders[0].CustomerId);
+        var customer = _custommerRepo.FindCustomer(request.orders[0].CustomerId);
         if (customer == null)
         {
             return JsonSerializer

@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Order.App.Services;
-
-namespace Order.App.Application.Command;
+﻿namespace Order.App.Application.Command;
 public class SendMailCommand : IRequest
 {
     public MailRequest MailRequest{ get; set; }

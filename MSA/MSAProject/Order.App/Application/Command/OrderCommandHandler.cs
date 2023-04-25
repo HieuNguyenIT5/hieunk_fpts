@@ -1,12 +1,4 @@
-﻿using MediatR;
-using Order.App.Common;
-using Order.App.Services;
-using Order.Infrastructure;
-using Order.Infrastructure.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Order.App.Application.Command;
+﻿namespace Order.App.Application.Command;
 public class OrderCommandHandler : IRequestHandler<OrderCommand>
 {
     private readonly DbContextModel _db;
@@ -14,12 +6,14 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
     private IProductRepository _productRepo;
     private IOrderItemRepository _orderItemRepo;
     private IRevenueRepository _revenueRepo;
+    private readonly INetMQSocket _socket;
     public OrderCommandHandler(
          DbContextModel db,
          IMediator mediator,
          IProductRepository productRepo,
          IOrderItemRepository orderItemRepo,
          IRevenueRepository revenueRepo,
+         INetMQSocket socket
      )
     {
         _db = db;
@@ -27,6 +21,7 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
         _productRepo = productRepo;
         _orderItemRepo = orderItemRepo;
         _revenueRepo = revenueRepo;
+        _socket = socket;
     }
 
     public Task<Unit> Handle(OrderCommand request, CancellationToken cancellationToken)
@@ -37,23 +32,39 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
         foreach (var item in request.Data)
         {
             var product = _db.Products.Find(item.ProductId);
-            checkQuantity = product != null ? product.checkQuantity(item.Quantity) : false;
-            var subTotal = item.SubTotal();
-
-            if (checkQuantity)
+            if (!product.checkQuantity(item.Quantity))
             {
+                checkQuantity = false;
+            }
+            totalCash += item.SubTotal();
+        }
+        if (!checkQuantity)
+        {
+            var json = new
+            {
+                success = false,
+                message = "Số lượng không đủ"
+            };
+            _socket.SendFrame(JsonSerializer.Serialize(json));
+        }
+        else
+        {
+            foreach(var item in request.Data){
+                var product = _db.Products.Find(item.ProductId);
+                decimal subTotal = item.SubTotal();
                 _orderItemRepo.AddOrderItem(item.CustomerId, item.ProductId, item.Quantity, item.Price, item.IP, 1);
                 var orderId = _orderItemRepo.GetLastOrderId();
                 _productRepo.minusQuantity(item.ProductId, item.Quantity);
                 _productRepo.plusQuantitySold(item.ProductId, item.Quantity);
                 _revenueRepo.Add(orderId, subTotal);
-                totalCash += subTotal;
                 body += AddItem(product.ProductName, item.Quantity, item.Price, subTotal);
             }
-            else
+            var json = new
             {
-                _orderItemRepo.AddOrderItem(item.CustomerId, item.ProductId, item.Quantity, item.Price, item.IP, 0);
-            }
+                success = true,
+                message = "Thành công"
+            };
+            _socket.SendFrame(JsonSerializer.Serialize(json));
         }
         body = Constants.BEGINBODY + body + Constants.ENDBODY;
         var mailRequest =

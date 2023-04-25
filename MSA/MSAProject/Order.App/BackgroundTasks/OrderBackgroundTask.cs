@@ -1,25 +1,15 @@
-﻿using Confluent.Kafka;
-using MediatR;
-using Microsoft.Extensions.Hosting;
-using Order.App.Application.Command;
-using Order.App.Services;
-using Order.Domain.AggregateModels;
-using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Order.App.BackgroundTasks;
+﻿namespace Order.App.BackgroundTasks;
 public class OrderBackgroundTask : BackgroundService
 {
     //inject consumer
     private readonly IConsumer<string, string> _consumer;
     private readonly IMediator _mediator;
-    public OrderBackgroundTask(IConsumer<string, string> consumer, IMediator mediator)
+    private readonly INetMQSocket _socket;
+    public OrderBackgroundTask(IConsumer<string, string> consumer, IMediator mediator, INetMQSocket socket)
     {
         _consumer = consumer;
         _mediator = mediator;
+        _socket = socket;
     }
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -49,7 +39,7 @@ public class OrderBackgroundTask : BackgroundService
                     {
                         var data = JsonSerializer.Deserialize<List<OrderItem>>(message.GetProperty("data"));
                         _mediator.Send(new OrderCommand(data));
-
+                
                     }
                     else
                     {
@@ -59,6 +49,8 @@ public class OrderBackgroundTask : BackgroundService
                             "Thong tin dat hang",
                             message.GetProperty("message").GetString()
                         );
+
+                        _socket.SendFrame(messageComsumer);
                         _mediator.Send(new SendMailCommand(mailRequest));
                     }
                 });

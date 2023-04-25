@@ -1,10 +1,4 @@
-﻿using Order.App.Services;
-using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
-using System;
-
-namespace Order.App.Application.Command;
+﻿namespace Order.App.Application.Command;
 public class SendMailCommandHandler : IRequestHandler<SendMailCommand>
 {
     private readonly IMailService mailService;

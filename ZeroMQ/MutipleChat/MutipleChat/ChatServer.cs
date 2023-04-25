@@ -12,7 +12,6 @@ namespace ZeroMQChat
             using (var publisher = new PublisherSocket())
             {
                 publisher.Bind(_address);
-
                 Console.WriteLine("Server started!");
 
                 while (true)

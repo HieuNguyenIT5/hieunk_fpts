@@ -13,4 +13,8 @@ public class OrderRepository : IOrderRepository
     {
         return _dbContext.Orders.Where(o => o.STATUS == status).ToList();
     }
+    public List<Order> getOrderByCustomerId(string cus_id)
+    {
+        return _dbContext.Orders.Where(o => o.CustomerId == cus_id).ToList();
+    }
 }

@@ -2,10 +2,7 @@
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using MimeKit;
-using Order.App.Settings;
-using System.Threading.Tasks;
 
 namespace Order.App.Services;
 public class MailService : IMailService

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Account.Domain.AggregateModels;
+﻿namespace Account.Domain.AggregateModels;
 
 public class Customer : Entity
 {

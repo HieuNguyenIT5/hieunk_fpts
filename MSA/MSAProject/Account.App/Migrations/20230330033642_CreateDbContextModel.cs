@@ -1,9 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-#nullable disable
-
-namespace Account.App.Migrations
+﻿namespace Account.App.Migrations
 {
     /// <inheritdoc />
     public partial class CreateDbContextModel : Migration
