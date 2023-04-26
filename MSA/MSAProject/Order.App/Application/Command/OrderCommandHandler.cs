@@ -5,12 +5,14 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
     private readonly IProductRepository _productRepo;
     private readonly IOrderItemRepository _orderItemRepo;
     private readonly IRevenueRepository _revenueRepo;
+    private readonly ICustomerRepository _customerRepo;
     private readonly INetMQSocket _socket;
     public OrderCommandHandler(
          IMediator mediator,
          IProductRepository productRepo,
          IOrderItemRepository orderItemRepo,
          IRevenueRepository revenueRepo,
+         ICustomerRepository customerRepo,
          INetMQSocket socket
      )
     {
@@ -18,6 +20,7 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
         _productRepo = productRepo;
         _orderItemRepo = orderItemRepo;
         _revenueRepo = revenueRepo;
+        _customerRepo = customerRepo;
         _socket = socket;
     }
 
@@ -60,6 +63,7 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
                 var orderId = _orderItemRepo.GetLastOrderId();
                 _productRepo.minusQuantity(item.ProductId, item.Quantity);
                 _productRepo.plusQuantitySold(item.ProductId, item.Quantity);
+                _customerRepo.minusCustomerWallet(item.CustomerId, subTotal);
                 _revenueRepo.Add(orderId, subTotal);
                 mailRequest.AddItem(product.ProductName, item.Quantity, item.Price, subTotal);
             }

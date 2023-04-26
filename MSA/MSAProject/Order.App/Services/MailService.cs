@@ -24,10 +24,10 @@ public class MailService : IMailService
 
         using (var client = new SmtpClient())
         {
-            if (!string.IsNullOrEmpty(_mailSettings.ProxyHost) && _mailSettings.ProxyPort > 0)
-            {
-                client.ProxyClient = new Socks5Client(_mailSettings.ProxyHost, _mailSettings.ProxyPort);
-            }
+            //if (!string.IsNullOrEmpty(_mailSettings.ProxyHost) && _mailSettings.ProxyPort > 0)
+            //{
+            //    client.ProxyClient = new Socks5Client(_mailSettings.ProxyHost, _mailSettings.ProxyPort);
+            //}
 
             await client.ConnectAsync(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls, cancellationToken: default);
             await client.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password, cancellationToken: default);
