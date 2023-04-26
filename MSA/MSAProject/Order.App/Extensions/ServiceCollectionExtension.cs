@@ -6,6 +6,7 @@ public static class ServiceCollectionExtension
     {
         services.AddKafkaConsumer(configuration);
         services.AddDbContext(configuration);
+        services.AddRepositories();
         services.AddMediator();
         services.AddSendMail(configuration);
         services.AddPubZeroMQ(configuration);
@@ -14,21 +15,23 @@ public static class ServiceCollectionExtension
 
     public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddSingleton<DbContextModel>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-        services.AddScoped<IRevenueRepository, RevenueRepository>();
         services.AddDbContext<DbContextModel>(options =>
         {
             options.UseOracle(configuration.GetConnectionString("OraDbConnection"));
         });
         return services;
     }
+    public static IServiceCollection AddRepositories(this IServiceCollection services) {
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+        services.AddScoped<IRevenueRepository, RevenueRepository>();
+        return services;
+    }
     public static IServiceCollection AddSendMail(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
-        services.AddTransient<IMailService, Services.MailService>();
+        services.AddTransient<IMailService,MailService>();
         return services;
     }
     public static IServiceCollection AddMediator(this IServiceCollection services)

@@ -30,7 +30,7 @@ public class AccountController : ControllerBase
         var orderTotal = await _mediator.Send(new OrderTotalDomainEvent(orders));
         var message = await _mediator.Send(new CheckCashCustomerDomainEvent(orderTotal, orders));
         _producer.Produce("order",new Message<string, string> {Key = orders[0].CustomerId, Value = message});
-        dynamic result = JsonSerializer.Deserialize<JsonElement>(_netMQSocket.ReceiveFrameString());
+         dynamic result = JsonSerializer.Deserialize<JsonElement>(_netMQSocket.ReceiveFrameString());
         var jsonResult = new
         {
             success = result.GetProperty("success").GetBoolean(),

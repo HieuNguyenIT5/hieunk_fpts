@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema; 
 
 namespace Order.Domain.AggregateModels;
+[Table("Orders")]
 public class OrderItem : Entity
 {
     public int OrderId { get; set; }=default(int);
@@ -10,9 +11,6 @@ public class OrderItem : Entity
     public DateTime DateTime { get; set; }
     public string IP { get; set; } = string.Empty;
     public int STATUS { get; set; }
-    //public virtual Product Product { get; set; }= new Product();
-    //public virtual Customer Customer { get; set; }= new Customer();
-    //public Revenue Revenue { get; set; } = new Revenue();
     public OrderItem(string CustomerId, int ProductId, int Quantity, decimal Price, string IP, int status) {
         this.CustomerId = CustomerId;
         this.ProductId = ProductId;

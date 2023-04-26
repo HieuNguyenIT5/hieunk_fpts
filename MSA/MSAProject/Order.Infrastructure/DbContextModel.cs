@@ -1,7 +1,6 @@
-﻿using Order.Domain.AggregateModels;
+﻿using Microsoft.EntityFrameworkCore;
+using Order.Domain.AggregateModels;
 using Order.Infrastructure.EntityConfigurations;
-using Microsoft.EntityFrameworkCore;
-using Account.Domain.AggregateModels;
 
 namespace Order.Infrastructure;
 public class DbContextModel : DbContext
@@ -25,13 +24,12 @@ public class DbContextModel : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new OrderItemEntityConfiguration());
         modelBuilder
             .ApplyConfiguration(new CustomerEntityConfiguration());
         modelBuilder
             .ApplyConfiguration(new ProductEntityConfiguration());
         modelBuilder
             .ApplyConfiguration(new RevenueEntityConfiguration());
-        modelBuilder
-            .ApplyConfiguration(new OrderItemEntityConfiguration());
     }
 }

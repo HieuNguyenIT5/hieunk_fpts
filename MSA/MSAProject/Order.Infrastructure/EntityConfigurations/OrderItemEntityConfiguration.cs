@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Account.Domain.AggregateModels;
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
-using Order.Domain.AggregateModels;
-
-namespace Account.Domain.AggregateModels;
+namespace Order.Domain.AggregateModels;
 public class OrderItemEntityConfiguration : IEntityTypeConfiguration<OrderItem>
 {
     public void Configure(EntityTypeBuilder<OrderItem> builder)

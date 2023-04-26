@@ -18,5 +18,22 @@ namespace Order.App.Services
             this.Subject = Subject;
             this.Body = Body;
         }
+
+        public void AddItem(string ProductName, int Quantity, decimal Price, decimal SubTotal)
+        {
+            this.Body += "<tr>" +
+                   "<td>" + ProductName + "</td>" +
+                   "<td>" + Quantity + "</td>" +
+                   "<td>" + Price + "</td>" +
+                   "<td>" + SubTotal + "</td>" +
+                   "</tr>";
+        }
+        public void AddTotalCash(decimal totalCash)
+        {
+            this.Body += "<tr>" +
+                   "<td colspan='3'>Tổng tiền:</td>" +
+                   "<td>" + totalCash + "</td>" +
+                   "</tr>";
+        }
     }
 }

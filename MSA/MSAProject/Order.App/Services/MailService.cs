@@ -12,7 +12,6 @@ public class MailService : IMailService
     {
         _mailSettings = mailSettings.Value;
     }
-
     public async Task SendEmail(MailRequest mailRequest)
     {
         var email = new MimeMessage();

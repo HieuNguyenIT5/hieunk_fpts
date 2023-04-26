@@ -9,10 +9,9 @@ public static class ServiceCollectionExtension
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-        services.AddDbContext(configuration);
         services.AddRepositories();
         services.AddQueries();
-        services.AddKafkaConsumer(configuration);
+        services.AddDbContext(configuration);
         services.AddKafkaProducer(configuration);
         services.AddMediator();
         services.AddSubZeroMQ(configuration);
@@ -64,23 +63,6 @@ public static class ServiceCollectionExtension
                 BootstrapServers = kafkaSettings.HostPort,
             };
             return new ProducerBuilder<string, string>(producerConfig).Build();
-        });
-        return services;
-    }
-    public static IServiceCollection AddKafkaConsumer(this IServiceCollection services, IConfiguration configuration)
-    {
-        KafkaSettings kafkaSettings = getKafkaString(configuration);
-        services.AddSingleton(sp =>
-        {
-            var consumerConfig = new ConsumerConfig
-            {
-                BootstrapServers = kafkaSettings.HostPort,
-                GroupId = kafkaSettings.Group,
-                AutoOffsetReset = AutoOffsetReset.Earliest,
-                EnableAutoCommit = true,
-            };
-
-            return new ConsumerBuilder<string, string>(consumerConfig).Build();
         });
         return services;
     }

@@ -1,0 +1,13 @@
+kafka:
+  brokers:
+    - 10.26.7.58:9092
+    - 10.26.7.59:9092
+    - 10.26.7.60:9092
+  schemaRegistry:
+    enabled: true
+    urls: ["http://10.26.7.194:8080"]
+connect:
+  enabled: true
+  clusters:
+    - name: kafka-connect # Required field, will be used as identifier in the frontend
+      url: http://10.26.7.196:8083
