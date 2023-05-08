@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Account.Domain.AggregateModels;
+namespace Order.Domain.AggregateModels;
 public class OrderEntityConfiguration : IEntityTypeConfiguration<Orders>
 {
     public void Configure(EntityTypeBuilder<Orders> builder)

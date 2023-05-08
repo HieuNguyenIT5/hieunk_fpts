@@ -1,14 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema; 
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
-namespace Order.Domain.AggregateModels;
+namespace Account.Domain.AggregateModels;
 [Table("OrderItem")]
 public class OrderItem
 {
-    public int OrderId { get; set; }
+    [JsonIgnore]
+    public int OrderId { get; set; }=default(int);
     public int ProductId { get; set; }
-    public int Quantity { get; set; }
-    public decimal Price { get; set; }
+    public int Quantity { get; set; } = 0;
+    public decimal Price { get; set; } = decimal.Zero;
+    [JsonIgnore]
     public virtual Orders Order { get; set; }
+    [JsonIgnore]
     public virtual Product Product { get; set; }
 
     public OrderItem(int OrderId, int ProductId, int Quantity, decimal Price) {

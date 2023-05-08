@@ -15,7 +15,7 @@ public class CheckCashCustomerDomainEventHandler : IRequestHandler<CheckCashCust
         {
            return string.Empty;
         }
-        var customer = _custommerRepo.FindCustomer(request.orders[0].CustomerId);
+        var customer = _custommerRepo.FindCustomer(request.order.CustomerId);
         if (customer == null)
         {
             return JsonSerializer
@@ -26,7 +26,7 @@ public class CheckCashCustomerDomainEventHandler : IRequestHandler<CheckCashCust
         }
         else if(customer.CustomerWallet > request.orderTotal)
         {
-            return JsonSerializer.Serialize(new { success = true, data = request.orders});
+            return JsonSerializer.Serialize(new { success = true, data = request.order});
         }
         return JsonSerializer
                 .Serialize(new

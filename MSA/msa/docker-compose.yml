@@ -3,7 +3,7 @@ version: "3.7"
 services:
  
     oracle:
-        image: hieukhac178/oracledb:1.0
+        image: hieukhac178/oracledb:1.1
         container_name: oracle
         ports:
             - "1521:1521"
@@ -19,9 +19,6 @@ services:
         # volumes:
             # - ./zk-single-kafka-single/zoo1/data:/data
             # - ./zk-single-kafka-single/zoo1/datalog:/datalog
-
-
-
     broker1:
         image: confluentinc/cp-kafka:6.1.1
         hostname: broker1
@@ -55,7 +52,7 @@ services:
             - broker1
 
     account:
-        image: account:1.0
+        image: hieukhac178/account:1.0
         container_name: account
         ports:
             - "5000:80"
@@ -67,7 +64,7 @@ services:
             - kowl
             - broker1
     order:
-        image: order:1.0
+        image: hieukhac178/order:1.0
         container_name: order
         volumes:
             - ./config/order/appsettings.json:/app/appsettings.json

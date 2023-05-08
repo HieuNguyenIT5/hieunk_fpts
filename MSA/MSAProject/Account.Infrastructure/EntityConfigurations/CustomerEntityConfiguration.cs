@@ -9,7 +9,11 @@ public class CustomerEntityConfiguration : IEntityTypeConfiguration<Customer>
     {
         builder.HasKey(x => x.CustomerId);
         builder
-            .HasKey(e => e.CustomerId);
+            .Property(x => x.CustomerName)
+            .IsRequired();
+        builder
+            .Property(x => x.CustomerEmail)
+            .IsRequired();
         builder
             .Property(e => e.CustomerName)
             .IsRequired()

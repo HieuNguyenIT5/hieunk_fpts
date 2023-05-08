@@ -1,4 +1,6 @@
-﻿namespace Order.App.BackgroundTasks;
+﻿using Order.Domain.DTOs;
+
+namespace Order.App.BackgroundTasks;
 public class OrderBackgroundTask : BackgroundService
 {
     //inject consumer
@@ -37,7 +39,7 @@ public class OrderBackgroundTask : BackgroundService
 
                     if (success)
                     {
-                        var data = JsonSerializer.Deserialize<List<OrderItem>>(message.GetProperty("data"));
+                        var data = JsonSerializer.Deserialize<OrderDto>(message.GetProperty("data"));
                         _mediator.Send(new OrderCommand(data));
                 
                     }
@@ -51,7 +53,7 @@ public class OrderBackgroundTask : BackgroundService
                         );
 
                         _socket.SendFrame(messageComsumer);
-                        _mediator.Send(new SendMailCommand(mailRequest));
+                        //_mediator.Send(new SendMailCommand(mailRequest));
                     }
                 });
             }

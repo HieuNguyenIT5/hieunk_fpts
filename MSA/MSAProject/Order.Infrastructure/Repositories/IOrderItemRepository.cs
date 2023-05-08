@@ -1,6 +1,6 @@
 ﻿namespace Order.Infrastructure.Repositories;
 public interface IOrderItemRepository
 {
-    public void AddOrderItem(string CustomerId, int ProductId, int Quantity, decimal Price, string IP, int status);
+    public void AddOrderItem(int OrderId, int ProductId, int Quantity, decimal Price);
     public int GetLastOrderId();
 }

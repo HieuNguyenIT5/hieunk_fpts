@@ -1,8 +1,8 @@
-﻿using Order.Domain.AggregateModels;
+﻿using Account.Domain.AggregateModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Order.Infrastructure.EntityConfigurations
+namespace Account.Infrastructure.EntityConfigurations
 {
     public class OrderItemEntityConfiguration : IEntityTypeConfiguration<OrderItem>
     {
@@ -22,8 +22,8 @@ namespace Order.Infrastructure.EntityConfigurations
                 .HasForeignKey(o => o.OrderId);
             builder
                 .HasOne(p => p.Product)
-                .WithMany(o => o.Items)
-                .HasForeignKey(o => o.ProductId);
+                .WithMany(o => o.OrderItem)
+                .HasForeignKey(o => o.OrderId);
         }
     }
 }

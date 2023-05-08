@@ -1,4 +1,6 @@
-﻿namespace Order.App.Application.Command;
+﻿using Microsoft.AspNetCore.Http.Internal;
+
+namespace Order.App.Application.Command;
 public class OrderCommandHandler : IRequestHandler<OrderCommand>
 {
     private readonly IMediator _mediator;
@@ -6,6 +8,7 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
     private readonly IOrderItemRepository _orderItemRepo;
     private readonly IRevenueRepository _revenueRepo;
     private readonly ICustomerRepository _customerRepo;
+    private readonly IOrderRepository _orderRepo;
     private readonly INetMQSocket _socket;
     public OrderCommandHandler(
          IMediator mediator,
@@ -13,6 +16,7 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
          IOrderItemRepository orderItemRepo,
          IRevenueRepository revenueRepo,
          ICustomerRepository customerRepo,
+         IOrderRepository orderRepo,
          INetMQSocket socket
      )
     {
@@ -21,6 +25,7 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
         _orderItemRepo = orderItemRepo;
         _revenueRepo = revenueRepo;
         _customerRepo = customerRepo;
+        _orderRepo = orderRepo;
         _socket = socket;
     }
 
@@ -30,18 +35,21 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
         decimal totalCash = 0;
         var mailRequest =
             new MailRequest(
-                "arnulfo78@ethereal.email",
+                _customerRepo.FindCustomer(request.Data.CustomerId).CustomerEmail,
                 "Thong tin dat hang",
                 ""
             );
-        foreach (var item in request.Data)
+        Orders order = new Orders(request.Data.CustomerId, request.Data.IP);
+        List<OrderItem> items = new List<OrderItem>();
+        foreach (var item in request.Data.Items)
         {
-            var product = _productRepo.FindProduct(item.ProductId);
-            if (!product.checkQuantity(item.Quantity))
+            OrderItem itemNew = new OrderItem(item.OrderId, item.ProductId, item.Quantity, item.Price);
+            items.Add(itemNew);
+            var product = _productRepo.FindProduct(itemNew.ProductId);
+            if (!product.checkQuantity(itemNew.Quantity))
             {
                 checkQuantity = false;
             }
-            totalCash += item.SubTotal();
         }
         if (!checkQuantity)
         {
@@ -55,18 +63,20 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
         }
         else
         {
-            foreach (var item in request.Data)
+            order = _orderRepo.addOder(order);
+            foreach (var item in items)
             {
                 var product = _productRepo.FindProduct(item.ProductId);
                 decimal subTotal = item.SubTotal();
-                _orderItemRepo.AddOrderItem(item.CustomerId, item.ProductId, item.Quantity, item.Price, item.IP, 1);
+                _orderItemRepo.AddOrderItem(order.OrderId, item.ProductId, item.Quantity, item.Price);
                 var orderId = _orderItemRepo.GetLastOrderId();
                 _productRepo.minusQuantity(item.ProductId, item.Quantity);
                 _productRepo.plusQuantitySold(item.ProductId, item.Quantity);
-                _customerRepo.minusCustomerWallet(item.CustomerId, subTotal);
-                _revenueRepo.Add(orderId, subTotal);
+                _customerRepo.minusCustomerWallet(order.CustomerId, subTotal);
+                totalCash += item.SubTotal();
                 mailRequest.AddItem(product.ProductName, item.Quantity, item.Price, subTotal);
             }
+            _revenueRepo.Add(order.OrderId, totalCash);
             var json = new
             {
                 success = true,
@@ -75,7 +85,7 @@ public class OrderCommandHandler : IRequestHandler<OrderCommand>
             _socket.SendFrame(JsonSerializer.Serialize(json));
         }
         mailRequest.Body = Constants.BEGINBODY + mailRequest.Body + Constants.ENDBODY;
-        _mediator.Send(new SendMailCommand(mailRequest));
+        //_mediator.Send(new SendMailCommand(mailRequest));
         return default;
     }
 }

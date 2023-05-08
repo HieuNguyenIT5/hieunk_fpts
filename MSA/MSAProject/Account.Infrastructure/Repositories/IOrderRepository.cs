@@ -3,6 +3,6 @@
 namespace Account.Infrastructure.Repositories;
 public interface IOrderRepository
 {
-    public List<Order> GetOrderByStatus(int status);
-    public List<Order> getOrderByCustomerId(string cus_id);
+    public List<Orders> GetOrderByStatus(int status);
+    public List<Orders> getOrderByCustomerId(string cus_id);
 }

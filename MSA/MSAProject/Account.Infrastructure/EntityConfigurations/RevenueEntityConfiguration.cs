@@ -10,10 +10,9 @@ namespace Account.Infrastructure.EntityConfigurations
         {
             builder
                 .HasKey(p => p.RevenueId);
-            //builder
-            //    .HasOne(p => p.Order)
-            //    .WithOne(p => p.Revenue)
-            //    .HasForeignKey<Revenue>(r => r.OrderId);
+            builder
+            .HasOne(p => p.Order)
+            .WithOne(r => r.Revenue);
         }
     }
 }

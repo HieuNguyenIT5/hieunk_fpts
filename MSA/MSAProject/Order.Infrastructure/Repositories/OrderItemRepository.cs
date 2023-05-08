@@ -9,15 +9,18 @@ public class OrderItemRepository : IOrderItemRepository
     {
         this._dbContext = dbContext;
     }
-    public void AddOrderItem(string CustomerId, int ProductId, int Quantity, decimal Price, string IP, int status)
+    public void AddOrderItem(int OrderId, int ProductId, int Quantity, decimal Price)
     {
-        var newOrderItem = new OrderItem(CustomerId, ProductId, Quantity, Price, IP, 1);
-        _dbContext.OrderItem.Add(newOrderItem);
+        var newOrderItem = new OrderItem();
+        newOrderItem.OrderId = OrderId;
+        newOrderItem.ProductId = ProductId;
+        newOrderItem.Quantity = Quantity;
+        newOrderItem.Price = Price;
         _dbContext.SaveChanges();
     }
     public int GetLastOrderId()
     {
-        var order = _dbContext.OrderItem.OrderByDescending(r => r.OrderId).FirstOrDefault();
+        var order = _dbContext.OrderItems.OrderByDescending(r => r.OrderId).FirstOrDefault();
         int id = order != null ? order.OrderId : 0;
         return id;
     }

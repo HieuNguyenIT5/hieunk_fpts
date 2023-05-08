@@ -12,15 +12,15 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace Account.App.Migrations
 {
     [DbContext(typeof(DbContextModel))]
-    [Migration("20230330033642_CreateDbContextModel")]
-    partial class CreateDbContextModel
+    [Migration("20230504083736_DbContext1")]
+    partial class DbContext1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -32,6 +32,10 @@ namespace Account.App.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("CustomerEmail")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -47,7 +51,26 @@ namespace Account.App.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("Account.Domain.AggregateModels.Order", b =>
+            modelBuilder.Entity("Account.Domain.AggregateModels.OrderItem", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("DECIMAL(18, 2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.HasKey("OrderId", "ProductId");
+
+                    b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("Account.Domain.AggregateModels.Orders", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -66,20 +89,12 @@ namespace Account.App.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("DECIMAL(18, 2)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.Property<int>("Quantity")
+                    b.Property<int>("STATUS")
                         .HasColumnType("NUMBER(10)");
 
                     b.HasKey("OrderId");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
                 });
@@ -97,7 +112,8 @@ namespace Account.App.Migrations
 
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR2(100)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("NUMBER(10)");
@@ -132,10 +148,29 @@ namespace Account.App.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Revenue");
+                    b.ToTable("Revenues");
                 });
 
-            modelBuilder.Entity("Account.Domain.AggregateModels.Order", b =>
+            modelBuilder.Entity("Account.Domain.AggregateModels.OrderItem", b =>
+                {
+                    b.HasOne("Account.Domain.AggregateModels.Orders", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Account.Domain.AggregateModels.Product", "Product")
+                        .WithMany("OrderItem")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Account.Domain.AggregateModels.Orders", b =>
                 {
                     b.HasOne("Account.Domain.AggregateModels.Customer", "Customer")
                         .WithMany("Orders")
@@ -143,20 +178,12 @@ namespace Account.App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Account.Domain.AggregateModels.Product", "Product")
-                        .WithMany("Orders")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Customer");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Account.Domain.AggregateModels.Revenue", b =>
                 {
-                    b.HasOne("Account.Domain.AggregateModels.Order", "Order")
+                    b.HasOne("Account.Domain.AggregateModels.Orders", "Order")
                         .WithOne("Revenue")
                         .HasForeignKey("Account.Domain.AggregateModels.Revenue", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -170,15 +197,17 @@ namespace Account.App.Migrations
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("Account.Domain.AggregateModels.Order", b =>
+            modelBuilder.Entity("Account.Domain.AggregateModels.Orders", b =>
                 {
+                    b.Navigation("Items");
+
                     b.Navigation("Revenue")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Account.Domain.AggregateModels.Product", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("OrderItem");
                 });
 #pragma warning restore 612, 618
         }

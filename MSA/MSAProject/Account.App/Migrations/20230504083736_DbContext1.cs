@@ -1,7 +1,12 @@
-﻿namespace Account.App.Migrations
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace Account.App.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateDbContextModel : Migration
+    public partial class DbContext1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -13,6 +18,7 @@
                     CustomerId = table.Column<string>(type: "NVARCHAR2(450)", nullable: false),
                     CustomerName = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
                     CustomerWallet = table.Column<decimal>(type: "DECIMAL(18, 2)", nullable: false),
+                    CustomerEmail = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false)
                 },
                 constraints: table =>
@@ -26,7 +32,7 @@
                 {
                     ProductId = table.Column<int>(type: "NUMBER(10)", nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    ProductName = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
+                    ProductName = table.Column<string>(type: "NVARCHAR2(100)", maxLength: 100, nullable: false),
                     Quantity = table.Column<int>(type: "NUMBER(10)", nullable: false),
                     QuantitySold = table.Column<int>(type: "NUMBER(10)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false)
@@ -42,13 +48,10 @@
                 {
                     OrderId = table.Column<int>(type: "NUMBER(10)", nullable: false)
                         .Annotation("Oracle:Identity", "START WITH 1 INCREMENT BY 1"),
-                    CustomerId = table.Column<string>(type: "NVARCHAR2(450)", nullable: false),
-                    ProductId = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    Quantity = table.Column<int>(type: "NUMBER(10)", nullable: false),
-                    Price = table.Column<decimal>(type: "DECIMAL(18, 2)", nullable: false),
                     DateTime = table.Column<DateTime>(type: "TIMESTAMP(7)", nullable: false),
                     IP = table.Column<string>(type: "NVARCHAR2(2000)", nullable: false),
-                    status = table.Column<int>(type: "NUMBER(10)", nullable: true)
+                    STATUS = table.Column<int>(type: "NUMBER(10)", nullable: false),
+                    CustomerId = table.Column<string>(type: "NVARCHAR2(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,16 +62,36 @@
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderItem",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "NUMBER(10)", nullable: false),
+                    ProductId = table.Column<int>(type: "NUMBER(10)", nullable: false),
+                    Quantity = table.Column<int>(type: "NUMBER(10)", nullable: false),
+                    Price = table.Column<decimal>(type: "DECIMAL(18, 2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItem", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_Orders_Products_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_OrderItem_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Products_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Revenue",
+                name: "Revenues",
                 columns: table => new
                 {
                     RevenueId = table.Column<int>(type: "NUMBER(10)", nullable: false)
@@ -79,9 +102,9 @@
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Revenue", x => x.RevenueId);
+                    table.PrimaryKey("PK_Revenues", x => x.RevenueId);
                     table.ForeignKey(
-                        name: "FK_Revenue_Orders_OrderId",
+                        name: "FK_Revenues_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
@@ -94,13 +117,8 @@
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_ProductId",
-                table: "Orders",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Revenue_OrderId",
-                table: "Revenue",
+                name: "IX_Revenues_OrderId",
+                table: "Revenues",
                 column: "OrderId",
                 unique: true);
         }
@@ -109,16 +127,19 @@
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Revenue");
+                name: "OrderItem");
+
+            migrationBuilder.DropTable(
+                name: "Revenues");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Customers");
-
-            migrationBuilder.DropTable(
-                name: "Products");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Account.App.Controllers;
+﻿using Account.Domain.DTOs; 
+
+namespace Account.App.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -9,12 +11,14 @@ public class AccountController : ControllerBase
     private readonly ICustomerQueries _customerQueries;
     private readonly IOrderQueries _orderQueries;
     private readonly INetMQSocket _netMQSocket;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     public AccountController(
         IProducer<string, string> producer,
         IMediator mediator,
         ICustomerQueries customerQueries,
         IOrderQueries orderQueries,
-        INetMQSocket netMQSocket
+        INetMQSocket netMQSocket,
+        IHttpContextAccessor httpContextAccessor
         )
     {
         _producer = producer;
@@ -22,14 +26,16 @@ public class AccountController : ControllerBase
         _customerQueries = customerQueries;
         _orderQueries = orderQueries;
         _netMQSocket = netMQSocket;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpPost("Order")]
-    public async Task<IActionResult> Order(List<Order> orders)
-    {
-        var orderTotal = await _mediator.Send(new OrderTotalDomainEvent(orders));
-        var message = await _mediator.Send(new CheckCashCustomerDomainEvent(orderTotal, orders));
-        _producer.Produce("order",new Message<string, string> {Key = orders[0].CustomerId, Value = message});
+    public async Task<IActionResult> Order(OrderDto order)
+    { 
+        order.IP = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        var orderTotal = await _mediator.Send(new OrderTotalDomainEvent(order));
+        var message = await _mediator.Send(new CheckCashCustomerDomainEvent(orderTotal, order));
+        _producer.Produce("order",new Message<string, string> {Key = order.CustomerId, Value = message});
          dynamic result = JsonSerializer.Deserialize<JsonElement>(_netMQSocket.ReceiveFrameString());
         var jsonResult = new
         {
@@ -53,7 +59,7 @@ public class AccountController : ControllerBase
     [HttpGet("GetSuccessfulOrders")]
     public IActionResult getSuccessfulOrders()
     {
-        List<Order> orders = _orderQueries.GetOrderByStatus(1);
+        List<Orders> orders = _orderQueries.GetOrderByStatus(1);
         if (orders.Count() != 0)
         {
             return Ok(orders);
@@ -63,7 +69,7 @@ public class AccountController : ControllerBase
     [HttpGet("GetOrderFaile")]
     public IActionResult getOrderFaile()
     {
-        List<Order> orders = _orderQueries.GetOrderByStatus(0);
+        List<Orders> orders = _orderQueries.GetOrderByStatus(0);
         if  (orders.Count() != 0)
         {
             return Ok(orders);
@@ -73,7 +79,7 @@ public class AccountController : ControllerBase
     [HttpGet("GetOrderByCustomerID/{cus_id}")]
     public IActionResult getOrderByCustomerID(string cus_id)
     {
-        List<Order> orders = _orderQueries.getOrderByCustomerID(cus_id);
+        List<Orders> orders = _orderQueries.getOrderByCustomerID(cus_id);
         if (orders.Count() != 0)
         {
             return Ok(orders);

@@ -7,5 +7,5 @@ public class Product
     public int Quantity { get; set; } = 0;
     public int QuantitySold { get; set; } = 0;
     public DateTime CreatedAt { get; set; }
-    public List<Order> Orders { get; set; }=new List<Order>();
+    public List<OrderItem> OrderItem { get; set; }=new List<OrderItem>();
 }

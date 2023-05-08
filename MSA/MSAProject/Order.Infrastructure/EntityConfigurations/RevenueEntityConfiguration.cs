@@ -10,9 +10,5 @@ public class RevenueEntityConfiguration : IEntityTypeConfiguration<Revenue>
     {
         builder
             .HasKey(p => p.RevenueId);
-        //builder
-        //    .HasOne(p => p.Order)
-        //    .WithOne(p => p.Revenue)
-        //    .HasForeignKey<Revenue>(r => r.OrderId);
     }
 }

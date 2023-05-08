@@ -5,9 +5,9 @@
        public async Task<decimal> Handle(OrderTotalDomainEvent request, CancellationToken cancellationToken)
         {
             decimal total = 0;
-            foreach(var order in request.Orders)
+            foreach(var order in request.Order.Items)
             {
-                total += order.SubTotal();
+                total += 1;
             }
             return total;
         }

@@ -1,4 +1,5 @@
-﻿using NetMQ;
+﻿using Account.Infrastructure;
+using System.Reflection;
 
 namespace Account.App.Extensions;
 public static class ServiceCollectionExtension
@@ -11,18 +12,18 @@ public static class ServiceCollectionExtension
         services.AddSwaggerGen();
         services.AddRepositories();
         services.AddQueries();
-        services.AddDbContext(configuration);
+        services.AddDbContextOrcl(configuration);
         services.AddKafkaProducer(configuration);
         services.AddMediator();
         services.AddSubZeroMQ(configuration);
+        services.AddHttpContextAccessor();
         return services;
     }
-
-    public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDbContextOrcl(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<DbContextModel>(options =>
         {
-            options.UseOracle(configuration.GetConnectionString("OraDbConnection"));
+            options.UseOracle(configuration.GetConnectionString("OraDbConnection"), b => b.MigrationsAssembly("Account.App"));
         });
         return services;
     }

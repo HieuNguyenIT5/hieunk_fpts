@@ -1,8 +1,10 @@
-﻿namespace Order.App.Application.Command;
+﻿using Order.Domain.DTOs;
+
+namespace Order.App.Application.Command;
 public class OrderCommand : IRequest
 {
-    public List<OrderItem> Data{ get; set; }
-    public OrderCommand(List<OrderItem> data)
+    public OrderDto Data{ get; set; }
+    public OrderCommand(OrderDto data)
     {
         this.Data = data;
     }

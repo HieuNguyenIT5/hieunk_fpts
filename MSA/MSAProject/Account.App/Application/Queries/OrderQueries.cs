@@ -7,12 +7,12 @@
         {
             _orderRepository = orderRepository;
         }
-        public List<Order> GetOrderByStatus(int status)
+        public List<Orders> GetOrderByStatus(int status)
         {
             return _orderRepository.GetOrderByStatus(status);
         }
 
-        public List<Order> getOrderByCustomerID(string cus_id)
+        public List<Orders> getOrderByCustomerID(string cus_id)
         {
             return _orderRepository.getOrderByCustomerId(cus_id);
         }

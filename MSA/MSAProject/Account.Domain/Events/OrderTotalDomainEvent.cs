@@ -1,13 +1,14 @@
 ﻿using Account.Domain.AggregateModels;
+using Account.Domain.DTOs;
 using MediatR;
 
 namespace Account.Domain.Events;
 public class OrderTotalDomainEvent : IRequest<decimal>
 {
-    public List<Order> Orders { get; set; }
+    public OrderDto Order { get; set; }
 
-    public OrderTotalDomainEvent(List<Order> orders)
+    public OrderTotalDomainEvent(OrderDto order)
     {
-        this.Orders = orders ?? throw new ArgumentNullException(nameof(orders));
+        this.Order = order ?? throw new ArgumentNullException(nameof(order));
     }
 }
